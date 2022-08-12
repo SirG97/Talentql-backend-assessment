@@ -7,18 +7,18 @@ const dotenv = require('dotenv')
 dotenv.config();
 
 const app = express();
-
+app.set('trust proxy', 1);
 const limiter = rateLimit({
     windowMs:   1000, // 3 sec
     max: 3, // limit each IP to 3 requests per secs
     message: 'Too many requests from this IP, please try again after 3 seconds'
 });
 
-app.set('trust proxy', 1);
+
 //  apply to all requests
 app.use(limiter);
 
-
+app.get('/ip', (request, response) => response.send(request.ip))
 app.get("/howold/:dob", (req, res) => {
 
     if(!Date.parse(req.params.dob)){
