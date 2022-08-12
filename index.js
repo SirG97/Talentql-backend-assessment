@@ -19,6 +19,11 @@ app.use(limiter);
 
 
 app.get("/howold/:dob", (req, res) => {
+
+    if(!Date.parse(req.params.dob)){
+        return res.status(400).send({"message": "Invalid date provided"});
+
+    }
     var today = new Date();
 
     let dob = new Date(req.params.dob);
@@ -36,7 +41,7 @@ app.get("/howold/:dob", (req, res) => {
         age--
     }
 
-    res.send({'age': age, "yob": req.params.dob, "monthDiff":m});
+    return res.send({'age': age, "yob": req.params.dob, "monthDiff":m});
 });
 
 const PORT = process.env.port || 3000
