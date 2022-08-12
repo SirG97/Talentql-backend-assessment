@@ -11,7 +11,9 @@ app.set('trust proxy', 2);
 const limiter = rateLimit({
     windowMs:   1000, // 3 sec
     max: 3, // limit each IP to 3 requests per secs
-    message: 'Too many requests from this IP, please try again after 3 seconds'
+    message: 'Too many requests from this IP, please try again after 3 seconds',
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
 
