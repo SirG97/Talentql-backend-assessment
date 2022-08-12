@@ -21,15 +21,15 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.get('/ip', (request, response) => response.send(request.ip))
-app.get("/howold/:dob",limiter,(req, res) => {
-
-    if(!Date.parse(req.params.dob)){
+app.get("/howold",limiter,(req, res) => {
+    console.log(req.query.dob);
+    if(!Date.parse(req.query.dob)){
         return res.status(400).send({"message": "Invalid date provided"});
 
     }
     var today = new Date();
 
-    let dob = new Date(req.params.dob);
+    let dob = new Date(req.query.dob);
     // Get date of birth and extract month and year
     let yearOfBirth = dob.getFullYear()
     let monthOfBirth = dob.getMonth()
@@ -44,7 +44,7 @@ app.get("/howold/:dob",limiter,(req, res) => {
         age--
     }
 
-    return res.send({'age': age, "yob": req.params.dob, "monthDiff":m});
+    return res.send({'age': age});
 });
 
 const PORT = process.env.port || 3000
