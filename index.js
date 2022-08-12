@@ -24,7 +24,7 @@ app.get('/ip', (request, response) => response.send(request.ip))
 app.get("/howold",limiter,(req, res) => {
     console.log(req.query.dob);
     if(!Date.parse(req.query.dob)){
-        return res.status(400).send({"message": "Invalid date provided"});
+        return res.status(400).send({"error": "Invalid date provided"});
 
     }
     var today = new Date();
