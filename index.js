@@ -1,13 +1,14 @@
 const express = require('express')
 const rateLimit = require('express-rate-limit')
 const dotenv = require('dotenv')
-
+const {  validationResult, check } = require('express-validator');
 
 //enable access to environment Variables
 dotenv.config();
 
 const app = express();
-app.set('trust proxy', 2);
+app.use(express.json());
+// app.set('trust proxy', 2);
 const limiter = rateLimit({
     windowMs:   1000, // 3 sec
     max: 3, // limit each IP to 3 requests per secs
@@ -16,35 +17,36 @@ const limiter = rateLimit({
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-
 //  apply to all requests
 app.use(limiter);
 
-app.get('/ip', (request, response) => response.send(request.ip))
-app.get("/howold",limiter,(req, res) => {
-    console.log(req.query.dob);
-    if(!Date.parse(req.query.dob)){
-        return res.status(400).send({"error": "Invalid date provided"});
 
+app.get("/howold", check('dob').notEmpty().isDate(), async(req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(400).json({ error: `${
+            errors.array()[0]['msg']}, please enter a valid date of birth in the format YYYY-MM-DD.`, });
+        }
+
+        var today = new Date();
+    
+        let dob = new Date(req.query.dob);
+        // Get date of birth and extract month and year
+        let yearOfBirthInMilliseconds = dob.getTime();
+        let currentYearInMilliseconds = today.getTime();
+        let oneYearInMilliseconds = 1000 * 60 * 60 * 24 * 365;
+
+        if(yearOfBirthInMilliseconds > currentYearInMilliseconds){
+            return res.status(400).json({ error: `Date of birth can't be more than the current year`, });
+        }
+        let age = Math.round((currentYearInMilliseconds - yearOfBirthInMilliseconds)/oneYearInMilliseconds)
+        
+        return res.status(200).send({'age': age});
+    } catch (error) {
+        res.status(500).json(error);
     }
-    var today = new Date();
 
-    let dob = new Date(req.query.dob);
-    // Get date of birth and extract month and year
-    let yearOfBirth = dob.getFullYear()
-    let monthOfBirth = dob.getMonth()
-
-    let currentYear = today.getFullYear();
-    let currentMonth = today.getMonth();
- 
-    let age = currentYear - yearOfBirth;
-    let m = currentMonth - monthOfBirth;
-
-    if(m < 0 || (m === 0 && today.getDate() < dob.getDate())){
-        age--
-    }
-
-    return res.send({'age': age});
 });
 
 const PORT = process.env.port || 3000
