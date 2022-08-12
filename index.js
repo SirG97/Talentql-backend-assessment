@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 const limiter = rateLimit({
-    windowMs:   1000, // 3 sec
+    windowMs:   20000, // 3 sec
     max: 3, // limit each IP to 3 requests per secs
     message: 'Too many requests from this IP, please try again after 3 seconds'
 });
@@ -18,7 +18,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 
-app.get("/howold/:dob", limiter, (req, res) => {
+app.get("/howold/:dob", (req, res) => {
     var today = new Date();
 
     let dob = new Date(req.params.dob);
