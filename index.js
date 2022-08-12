@@ -14,6 +14,7 @@ const limiter = rateLimit({
     message: 'Too many requests from this IP, please try again after 3 seconds'
 });
 
+app.set('trust proxy', 1);
 //  apply to all requests
 app.use(limiter);
 
