@@ -7,7 +7,7 @@ const dotenv = require('dotenv')
 dotenv.config();
 
 const app = express();
-app.set('trust proxy', 1);
+app.set('trust proxy', 2);
 const limiter = rateLimit({
     windowMs:   1000, // 3 sec
     max: 3, // limit each IP to 3 requests per secs
