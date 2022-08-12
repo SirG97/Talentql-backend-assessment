@@ -18,7 +18,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 
-app.get("/howold/:dob", (req, res) => {
+app.get("/howold/:dob", limiter, (req, res) => {
     var today = new Date();
 
     let dob = new Date(req.params.dob);
