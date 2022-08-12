@@ -19,7 +19,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.get('/ip', (request, response) => response.send(request.ip))
-app.get("/howold/:dob", (req, res) => {
+app.get("/howold/:dob",limiter,(req, res) => {
 
     if(!Date.parse(req.params.dob)){
         return res.status(400).send({"message": "Invalid date provided"});
