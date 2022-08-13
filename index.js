@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 // app.set('trust proxy', 1);
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 const limiter = rateLimit({
   windowMs: 1000, // 1 second in milliseconds
   max: 3,
@@ -20,12 +20,12 @@ const limiter = rateLimit({
 });
 
 //  apply to all requests
-app.use(limiter);
+// app.use(limiter);
 
-app.get('/', (req, res)=>{
+app.use(limiter).get('/', (req, res)=>{
     res.status(200).send("Hello World")
 })
-app.get("/howold", check('dob').notEmpty().isDate(), async(req, res) => {
+app.use(limiter).get("/howold", check('dob').notEmpty().isDate(), async(req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
