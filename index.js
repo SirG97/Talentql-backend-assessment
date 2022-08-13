@@ -12,7 +12,7 @@ app.set('trust proxy', 2);
 
 const PORT = process.env.PORT || 3000;
 const limiter = rateLimit({
-  windowMs: 100000, // 1 second in milliseconds
+  windowMs: 1000, // 1 second in milliseconds
   max: 3,
   message: 'Too many requests from this IP, please try again after 3 seconds',
   standardHeaders: true,
