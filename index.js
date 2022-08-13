@@ -9,12 +9,14 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 // app.set('trust proxy', 1);
+
+const PORT = process.env.port || 3000
 const limiter = rateLimit({
-    windowMs:   1000, // 3 sec
-    max: 3, // limit each IP to 3 requests per secs
-    message: 'Too many requests from this IP, please try again after 3 seconds',
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  windowMs: 1000, // 1 second in milliseconds
+  max: 3,
+  message: 'Too many requests from this IP, please try again after 3 seconds',
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 //  apply to all requests
@@ -49,7 +51,7 @@ app.get("/howold", check('dob').notEmpty().isDate(), async(req, res) => {
 
 });
 
-const PORT = process.env.port || 3000
+
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}`)
