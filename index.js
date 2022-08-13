@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.set('trust proxy', 2);
+app.set('trust proxy', 1);
 
 const PORT = process.env.PORT || 3000;
 const limiter = rateLimit({
