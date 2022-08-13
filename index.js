@@ -22,7 +22,9 @@ const limiter = rateLimit({
 //  apply to all requests
 app.use(limiter);
 
-
+app.get('/', (req, res)=>{
+    res.status(200).send("Hello World")
+})
 app.get("/howold", check('dob').notEmpty().isDate(), async(req, res) => {
     try {
         const errors = validationResult(req);
