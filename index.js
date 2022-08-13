@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 // app.set('trust proxy', 1);
 
-const PORT = process.env.port || 3000
+const PORT = process.env.PORT || 3000
 const limiter = rateLimit({
   windowMs: 1000, // 1 second in milliseconds
   max: 3,
