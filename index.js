@@ -1,6 +1,7 @@
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const { validationResult, check } = require("express-validator");
 
 //enable access to environment Variables
@@ -21,12 +22,12 @@ const limiter = rateLimit({
   message: "Too many requests from this IP, please try again after 3 seconds",
   standardHeaders: true,
   legacyHeaders: false,
-  handler: (req, res, next, options) => {
-    res.status(options.statusCode).json({
-        status: 'error',
-        error: 'Too many requests, please try again later.'
-    });
-}
+      handler: (req, res, next, options) => {
+        res.status(options.statusCode).json({
+            status: 'error',
+            error: 'Too many requests, please try again later.'
+        });
+    }
 });
 // apply to all requests
 app.use(limiter);
