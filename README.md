@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/3fe396989c724a329dbafaaacbea174a)](https://www.codacy.com/gh/SirG97/Talentql-backend-assessment/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SirG97/Talentql-backend-assessment&amp;utm_campaign=Badge_Grade)
+
 # Backend Assessment
 
 Build and deploy a very simple API that does the following
