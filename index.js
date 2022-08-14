@@ -35,12 +35,13 @@ app.get("/howold", check("dob").notEmpty().isDate(), async(req, res) => {
     let currentYearInMilliseconds = today.getTime();
     let oneYearInMilliseconds = 1000 * 60 * 60 * 24 * 365;
     if(yearOfBirthInMilliseconds > currentYearInMilliseconds){
-        return res.status(400).json({ error: "Date of birth can't be more than the current year", });
+        return res.status(400).json({ error: "Date of birth can't be more than the current year"});
     }
     let age = Math.round((currentYearInMilliseconds - yearOfBirthInMilliseconds)/oneYearInMilliseconds);
     return res.status(200).send({ message: "age calculated successfully", age: age});
   
 });
 app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}`);});
+  console.log(`App running on port ${PORT}`);
+});
 
