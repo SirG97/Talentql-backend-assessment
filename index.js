@@ -11,8 +11,7 @@ const app = express();
 // adds middleware for cross-origin resource sharing configuration
 app.use(cors());
 
-// adds middleware that parses requests with x-www-form-urlencoded data encoding
-app.use(urlencoded({ extended: true }));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
