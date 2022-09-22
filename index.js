@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 const PORT = process.env.PORT || 3000;
 const limiter = rateLimit({
   windowMs: 1000, // 1 second
-  max: 2,
+  max: 3,
   message: "Too many requests from this IP, please try again after 3 seconds",
   standardHeaders: true,
   legacyHeaders: false,
@@ -36,6 +36,7 @@ const limiter = rateLimit({
             status: 'error',
             error: 'Too many requests, please try again later.'
         });
+        // next()
     }
 });
 // apply to all requests
