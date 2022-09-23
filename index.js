@@ -1,6 +1,6 @@
-import express, { json, urlencoded } from 'express';
-import rateLimit, { MemoryStore } from 'express-rate-limit';
-import dotenv from 'dotenv';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import { config } from 'dotenv';
 import cors from 'cors';
 // import requestIP from 'request-ip';
 // import nodeCache from 'node-cache';
@@ -8,14 +8,14 @@ import cors from 'cors';
 import { validationResult, check } from 'express-validator';
 
 //enable access to environment Variables
-dotenv.config();
+config();
 
 const app = express();
 // adds middleware for cross-origin resource sharing configuration
 app.use(cors());
 
-app.use(urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-app.use(json());
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(express.json());
 
 
 // const TIME_FRAME_IN_S = 10;
