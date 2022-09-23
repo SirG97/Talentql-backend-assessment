@@ -87,7 +87,7 @@ app.get("/", (req, res) => {
     res.status(200)
        .send("Welcome to TalentQL Backend Assessment API")
 })
-app.get("/howold", check("dob").notEmpty().isDate(), async(req, res) => {
+app.get("/howold", limiter, check("dob").notEmpty().isDate(), async(req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({ error: `${errors.array()[0]["msg"]}, please enter a valid date of birth in the format YYYY-MM-DD.`});
@@ -104,6 +104,7 @@ app.get("/howold", check("dob").notEmpty().isDate(), async(req, res) => {
     return res.status(200).send({ message: "age calculated successfully", age: age});
   
 });
+app.use('*', (req, res)=>res.send('Route does not exist'))
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}`);
 });
