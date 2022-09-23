@@ -1,5 +1,5 @@
-import express from 'express';
-import rateLimit from 'express-rate-limit';
+import express, { json, urlencoded } from 'express';
+import rateLimit, { MemoryStore } from 'express-rate-limit';
 import dotenv from 'dotenv';
 import cors from 'cors';
 // import requestIP from 'request-ip';
@@ -15,8 +15,8 @@ const app = express();
 app.use(cors());
 
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(json());
+app.use(urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 
 // const TIME_FRAME_IN_S = 10;
@@ -26,18 +26,19 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 
 const PORT = process.env.PORT || 3000;
 const limiter = rateLimit({
-  windowMs: 1000, // 1 second
+  windowMs: 1 * 1000, // 1 second
   max: 3,
-  message: "Too many requests from this IP, please try again after 3 seconds",
+  handler: (req, res, next, options) => {
+    res.status(options.statusCode).json({
+        status: 'error',
+        error: 'Too many requests, please try again later.'
+    });
+    
+    }, 
+  statusCode: 429,
   standardHeaders: true,
   legacyHeaders: false,
-      handler: (req, res, next, options) => {
-        res.status(429).json({
-            status: 'error',
-            error: 'Too many requests, please try again later.'
-        });
-        // next()
-    }
+
 });
 // apply to all requests
 app.use(limiter);
