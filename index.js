@@ -1,11 +1,11 @@
-import express from 'express';
-import rateLimit from 'express-rate-limit';
-import { config } from 'dotenv';
-import cors from 'cors';
+const express = require('express');
+const rateLimit = require('express-rate-limit');
+const { config } = require('dotenv');
+const cors = require('cors');
 // import requestIP from 'request-ip';
 // import nodeCache from 'node-cache';
 // import {isIP, isIPv4, isIPv6} from 'is-ip';
-import { validationResult, check } from 'express-validator';
+const { validationResult, check } = require('express-validator');
 
 //enable access to environment Variables
 config();
