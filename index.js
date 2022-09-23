@@ -25,7 +25,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const limiter = rateLimit({
-  windowMs: 30 * 1000, // 1 second
+  windowMs: 1 * 1000, // 1 second
   max: 3,
   handler: (req, res, next, options) => {
     res.status(options.statusCode).json({
@@ -87,7 +87,7 @@ app.get("/", (req, res) => {
        .send("Welcome to TalentQL Backend Assessment API")
 })
 // check("dob").notEmpty().isDate()
-app.get("/howold", async(req, res) => {
+app.get("/howold", check("dob").notEmpty().isDate(), async(req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({ error: `${errors.array()[0]["msg"]}, please enter a valid date of birth in the format YYYY-MM-DD.`});
