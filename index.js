@@ -14,9 +14,8 @@ const app = express();
 // adds middleware for cross-origin resource sharing configuration
 app.use(cors());
 
-
-app.use(json());
 app.use(urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(json());
 
 
 // const TIME_FRAME_IN_S = 10;
@@ -26,7 +25,7 @@ app.use(urlencoded({ extended: true })) // for parsing application/x-www-form-ur
 
 const PORT = process.env.PORT || 3000;
 const limiter = rateLimit({
-  windowMs: 1 * 1000, // 1 second
+  windowMs: 30 * 1000, // 1 second
   max: 3,
   handler: (req, res, next, options) => {
     res.status(options.statusCode).json({
@@ -87,7 +86,8 @@ app.get("/", (req, res) => {
     res.status(200)
        .send("Welcome to TalentQL Backend Assessment API")
 })
-app.get("/howold", limiter, check("dob").notEmpty().isDate(), async(req, res) => {
+// check("dob").notEmpty().isDate()
+app.get("/howold", limiter, async(req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({ error: `${errors.array()[0]["msg"]}, please enter a valid date of birth in the format YYYY-MM-DD.`});
