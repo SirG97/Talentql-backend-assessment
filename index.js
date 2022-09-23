@@ -87,7 +87,7 @@ app.get("/", (req, res) => {
        .send("Welcome to TalentQL Backend Assessment API")
 })
 // check("dob").notEmpty().isDate()
-app.get("/howold", limiter, async(req, res) => {
+app.get("/howold", async(req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({ error: `${errors.array()[0]["msg"]}, please enter a valid date of birth in the format YYYY-MM-DD.`});
