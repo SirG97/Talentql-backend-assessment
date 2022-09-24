@@ -11,6 +11,7 @@ const { validationResult, check } = require('express-validator');
 config();
 
 const app = express();
+app.set('trust proxy', 1)
 // adds middleware for cross-origin resource sharing configuration
 app.use(cors());
 
@@ -40,6 +41,7 @@ const limiter = rateLimit({
 
 });
 // apply to all requests
+app.set('trust proxy', 1);
 app.use(limiter);
 // const ipMiddleware = async function (req, res, next) {
 //     let clientIP = requestIP.getClientIp(req);
