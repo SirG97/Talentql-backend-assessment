@@ -41,7 +41,7 @@ const limiter = rateLimit({
 
 });
 // apply to all requests
-app.set('trust proxy', 1);
+
 app.use(limiter);
 // const ipMiddleware = async function (req, res, next) {
 //     let clientIP = requestIP.getClientIp(req);
@@ -83,26 +83,47 @@ app.use(limiter);
 //     IPArray.push(new Date());
 //     IPCache.set(ip, IPArray, (IPCache.getTtl(ip) - Date.now()) * MS_TO_S || TIME_FRAME_IN_S);
 // };
+const validateDob = (req, res, next) => {
+    const { query: { dob } } = req; //destructure dob from query params
+
+    if(!dob) {
+        return res.status(400).json({
+            status: 'error',
+            error: 'Date of Birth is missing'
+        });
+    }
+
+    const date = new Date(Number(dob));
+    if(isNaN(date.getTime())){
+        return res.status(400).json({
+            status: 'error',
+            error: 'please enter a valid date of birth in milliseconds'
+        });
+       
+    }
+    req.validDob = date;
+    next();
+}
 
 app.get("/", (req, res) => {
     res.status(200)
        .send("Welcome to TalentQL Backend Assessment API")
 })
 // check("dob").notEmpty().isDate()
-app.get("/howold", check("dob").notEmpty().isDate(), async(req, res) => {
+app.get("/howold", validateDob, async(req, res) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return res.status(400).json({ error: `${errors.array()[0]["msg"]}, please enter a valid date of birth in the format YYYY-MM-DD.`});
-    }
+    // if(!errors.isEmpty()){
+    //     return res.status(400).json({ error: `${errors.array()[0]["msg"]}, please enter a valid date of birth in the format YYYY-MM-DD.`});
+    // }
     let today = new Date();
     let dob = new Date(req.query.dob);// Get date of birth and extract month and year
     let yearOfBirthInMilliseconds = dob.getTime();
     let currentYearInMilliseconds = today.getTime();
     let oneYearInMilliseconds = 1000 * 60 * 60 * 24 * 365;
-    if(yearOfBirthInMilliseconds > currentYearInMilliseconds){
+    if(req.validDob > currentYearInMilliseconds){
         return res.status(400).json({ error: "Date of birth can't be more than the current year"});
     }
-    let age = Math.round((currentYearInMilliseconds - yearOfBirthInMilliseconds)/oneYearInMilliseconds);
+    let age = Math.round((currentYearInMilliseconds - req.validDob)/oneYearInMilliseconds);
     return res.status(200).send({ message: "age calculated successfully", age: age});
   
 });
