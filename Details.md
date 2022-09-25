@@ -14,5 +14,5 @@ How to get started
 3.  Open your terminal, navigate into the repo and run 'node index.js'
 
 How it works
-Send a get request to http://localhost:{PORT}/howold?dob={MILLISECONDS} where MILLISECONDS is is a valid timestamp. The result will be calculated and returned
+Send a get request to http://localhost:{PORT}/howold?dob={MILLISECONDS} where MILLISECONDS is is a valid timestamp. The result will be calculated and returned.
 
