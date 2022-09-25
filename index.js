@@ -41,7 +41,7 @@ const validateDob = (req, res, next) => {
     const { query: { dob } } = req; //destructure dob from query params
 
     if(!dob) {
-        return res.status(400).json({
+        return res.status(400).send({
             status: 'error',
             error: 'Date of Birth is missing'
         });
@@ -71,10 +71,10 @@ app.get("/howold", validateDob, async(req, res) => {
     let currentYearInMilliseconds = today.getTime();
     let oneYearInMilliseconds = 1000 * 60 * 60 * 24 * 365;
     if(req.validDob > currentYearInMilliseconds){
-        return res.status(400).send({ error: "Date of birth can't be more than the current year"});
+        return res.status(400).json({status: "error", error: "Date of birth can't be more than the current year"});
     }
     let age = Math.round((currentYearInMilliseconds - req.validDob)/oneYearInMilliseconds);
-    return res.status(200).send({ message: "age calculated successfully", age: age});
+    return res.status(200).json({ message: "age calculated successfully", age: age});
   
 });
 app.use('*', (req, res)=>res.send('Route does not exist'))
