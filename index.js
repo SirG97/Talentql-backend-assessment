@@ -10,7 +10,7 @@ config();
 
 const app = express();
 
-app.set('trust proxy', 2)
+app.set('trust proxy', 1)
 // adds middleware for cross-origin resource sharing configuration
 app.use(cors());
 
